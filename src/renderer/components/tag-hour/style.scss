@@ -1,0 +1,25 @@
+.tags {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  span {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+    text-align: center;
+  }
+
+  &__container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    p {
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+}

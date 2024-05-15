@@ -1,0 +1,29 @@
+.container {
+  align-items: center;
+  position: relative;
+  width: 100%;
+
+  label {
+    font-size: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 100%;
+      background-color: transparent;
+      border: white 1px solid;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+    }
+
+    span {
+      position: absolute;
+      cursor: pointer;
+      right: 0.5rem;
+    }
+  }
+}

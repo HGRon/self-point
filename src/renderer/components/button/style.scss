@@ -1,0 +1,79 @@
+.button {
+  transition: all 0.2s ease-in-out;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &--void {
+    background-color: transparent;
+  }
+
+  &--submit {
+    @extend .base-button;
+
+    color: white;
+    background-color: #ade4b5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &--confirm {
+    @extend .base-button;
+
+    color: black;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &--reset {
+    @extend .base-button;
+
+    color: #ade4b5;
+    background-color: transparent;
+  }
+
+  &--error {
+    @extend .base-button;
+
+    color: white;
+    background-color: red;
+  }
+
+  &--error {
+    @extend .base-button;
+
+    color: white;
+    background-color: red;
+  }
+
+  &--small {
+    font-size: 8px;
+  }
+
+  &--medium {
+    font-size: 15px;
+  }
+
+  &--large {
+    font-size: 25px;
+  }
+
+}
+
+.base-button {
+  padding: 0.3rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+}
+
+.hover-opacity:hover {
+  opacity: 0.4;
+}
+
+.hover-scale:hover {
+  transform: scale(1.1);
+}
+
+.hover-rotate:hover {
+  transform: rotate(80deg);
+}
