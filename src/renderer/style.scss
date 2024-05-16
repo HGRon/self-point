@@ -1,3 +1,15 @@
+@import './components/button/style.scss';
+@import './components/checkbox/style.scss';
+@import './components/draggable-circle/style.scss';
+@import './components/input/style.scss';
+@import './components/loading/style.scss';
+@import './components/modal-config/style.scss';
+@import './components/tag-hour/style.scss';
+@import './components/toast/style.scss';
+@import './components/toggle/style.scss';
+
+@import 'variables.scss';
+
 .app {
   position: relative;
 
@@ -10,14 +22,19 @@
   height: 100%;
   padding: 1rem;
   border-radius: 2rem;
-  background-color: #eeffff;
-  border: solid 1px #71dbd2;
+  background-color: var(--app-color);
+  border: solid 1px var(--app-border);
+  
+  h2 {
+    color: var(--text-color-black);
+  }
 
   &__header {
     position: absolute;
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     height: 4rem;
     width: 100vw;
@@ -28,6 +45,7 @@
 
     &__movable {
       flex: 1;
+      height: 100%;
       -webkit-app-region: drag;
     }
   }
@@ -45,6 +63,24 @@
       display: block;
       width: 100%;
       text-align: center;
+      color: var(--text-color-black);
     }
   }
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  outline: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#root, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
 }

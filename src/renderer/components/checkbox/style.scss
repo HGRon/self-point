@@ -22,7 +22,7 @@
     cursor: pointer;
 
     &:checked {
-      background-color: #71dbd2;
+      background-color: var(--checkbox-color);
     }
   }
 }

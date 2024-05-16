@@ -3,7 +3,7 @@ import { InputTypeEnum } from '../input/models/input-type.enum';
 import Checkbox from '../checkbox';
 import Button from '../button';
 import { ButtonTypeEnum } from '../button/models/button-type.enum';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserConfig } from './models/user-config';
 import { StorageService } from '../../services/storage/storage-service';
 import { notify } from '../toast/services/notify';
@@ -77,7 +77,7 @@ function ModalConfig({ isOpen, forceClose }: ModalConfigProps) {
   return (
     <dialog open={ isOpen } id="modal-config" onClick={ outsideClose } className="modal">
       <div className="modal__container">
-        <header>Configurações</header>
+        <header>Configurações 🔩</header>
 
         <div className="modal__container__geolocation">
           <Input name="latitude"
@@ -106,7 +106,7 @@ function ModalConfig({ isOpen, forceClose }: ModalConfigProps) {
 
         <div className="modal__container__point-config">
           <div className="modal__container__point-config__column">
-            <span>Dados de acesso</span>
+            <span>Dados de acesso 🔐</span>
 
             <Input name="username"
                    placeholder="Nome de usuário"
@@ -121,7 +121,7 @@ function ModalConfig({ isOpen, forceClose }: ModalConfigProps) {
           </div>
 
           <div className="modal__container__point-config__column">
-            <span>Rotinas
+            <span>Rotinas 🕟
               <Checkbox name="automatic"
                         placeholder="Automatico ?"
                         onChange={ handleChange }

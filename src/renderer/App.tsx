@@ -17,6 +17,7 @@ import Loading from './components/loading';
 import { Time } from './helpers/time';
 import { CronService } from './services/cron/cron-service';
 import { ClockingInService } from './services/cloking-in/clocking-in-service';
+import Toggle from './components/toggle';
 
 function App() {
 
@@ -32,6 +33,16 @@ function App() {
 
   const handleClose = async () => {
     await close();
+  }
+
+  const getDarkMode = async () => {
+    const isDarkMode = await isDark()
+    await setStyleMode(isDarkMode);
+  }
+
+  const setStyleMode = async (toggle: boolean) => {
+    document.documentElement.setAttribute('data-theme', toggle ? 'dark' : 'light');
+    await saveIsDark(toggle);
   }
 
   const getTodayPoints = async () => {
@@ -86,7 +97,6 @@ function App() {
       setRegisterLoading(false);
       notifyDismiss(tId);
     }
-
   }
 
   const reload = async () => {
@@ -95,6 +105,7 @@ function App() {
   }
 
   useEffect(() => {
+    getDarkMode().then();
     getTodayPoints().then();
   }, []);
 
@@ -103,7 +114,10 @@ function App() {
 
       <header className="app__header">
         <Button onClick={ handleOpenModal } animation={ ButtonAnimationEnum.HOVER_SCALE } size={ ButtonSizeEnum.LARGE } >⚙️</Button>
+        <Toggle onChange={ setStyleMode } leftIcon="☀️" rightIcon="🌑" startValue={ false } />
+
         <div className="app__header__movable"></div>
+
         <Button onClick={ handleClose } animation={ ButtonAnimationEnum.HOVER_SCALE } size={ ButtonSizeEnum.LARGE }>❌</Button>
       </header>
 
@@ -144,4 +158,19 @@ async function getUserConfig(): Promise<UserConfig> {
     throw new Error('Não foi possível encontrar as configurações.')
 
   return userConfig;
+}
+
+async function isDark(): Promise<boolean> {
+  const storage = new StorageService();
+  const darkMode = await storage.get<boolean>(StorageKeyEnum.DARK_MODE);
+
+  if (!darkMode)
+    return false;
+
+  return darkMode;
+}
+
+async function saveIsDark(isDarK: boolean): Promise<void> {
+  const storage = new StorageService();
+  await storage.set(StorageKeyEnum.DARK_MODE, isDarK);
 }

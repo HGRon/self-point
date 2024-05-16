@@ -1,0 +1,40 @@
+:root {
+  --color-primary: #71dbd2;
+  --color-secondary: #eeffff;
+  --color-tertiary: #ade4b5;
+  
+  --color-neutral-white: #FFFFFF;
+  --color-neutral-100: #DDDDDD;
+  --color-neutral-200: #BBBBBB;
+  --color-neutral-800: #333333;
+  --color-neutral-900: #252525;
+  --color-neutral-black: #212121;
+}
+
+[data-theme="light"] {
+  --modal-background: var(--color-tertiary);
+  --draglable-color: var(--color-primary);
+  --checkbox-color: var(--color-primary);
+  --app-color: var(--color-secondary);
+  --app-border: var(--color-primary);
+  --loading-default: var(--color-primary);
+  --toggle-color: var(--color-tertiary);
+  
+  --text-color-black: var(--color-neutral-black);
+  --text-color-gray: var(--color-neutral-800);
+  --text-color-white: var(--color-neutral-white);
+}
+
+[data-theme="dark"] {
+  --modal-background: var(--color-neutral-900);
+  --draglable-color: var(--color-neutral-800);
+  --checkbox-color: var(--color-neutral-black);
+  --app-color: var(--color-neutral-black);
+  --app-border: var(--color-neutral-800);
+  --loading-default: var(--color-neutral-800);
+  --toggle-color: var(--color-neutral-800);
+  
+  --text-color-black: var(--color-neutral-200);
+  --text-color-gray: var(--color-neutral-100);
+  --text-color-white: var(--color-neutral-white);
+}

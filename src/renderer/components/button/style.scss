@@ -7,13 +7,14 @@
 
   &--void {
     background-color: transparent;
+    color: var(--text-color-black);
   }
 
   &--submit {
     @extend .base-button;
 
     color: white;
-    background-color: #ade4b5;
+    background-color: var(--text-color-black);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
@@ -21,28 +22,21 @@
     @extend .base-button;
 
     color: black;
-    background-color: #FFFFFF;
+    background-color: var(--text-color-white);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   &--reset {
     @extend .base-button;
 
-    color: #ade4b5;
+    color: var(--text-color-white);
     background-color: transparent;
   }
 
   &--error {
     @extend .base-button;
 
-    color: white;
-    background-color: red;
-  }
-
-  &--error {
-    @extend .base-button;
-
-    color: white;
+    color: var(--text-color-white);
     background-color: red;
   }
 
