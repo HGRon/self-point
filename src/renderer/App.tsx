@@ -37,8 +37,6 @@ function App() {
   }
 
   const handlerToggle = async (toggle: boolean): Promise<void> => {
-    console.log(toggle);
-
     updateStyleMode(toggle);
     await saveIsDark(toggle);
   }
