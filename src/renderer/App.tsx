@@ -20,6 +20,8 @@ import { ClockingInService } from './services/cloking-in/clocking-in-service';
 import Toggle from './components/toggle';
 
 function App() {
+  let blockClocking = false;
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [registerLoading, setRegisterLoading] = React.useState(false);
   const [schedule, setSchedule] = React.useState('');
@@ -66,6 +68,8 @@ function App() {
         url: userConfig.url,
       });
 
+      blockClocking = newClocking.length >= 4;
+
       const time = new Time();
 
       setClocking(newClocking.map(nc => time.millisecondsToHour(nc)));
@@ -88,7 +92,7 @@ function App() {
     const tId = notify('Registrando ponto', ToastTypeEnum.LOADING);
 
     try {
-      if (clocking.length >= 4)
+      if (blockClocking)
         throw new Error('O limite de ponto por dia foi atingido.');
 
       setRegisterLoading(true);
