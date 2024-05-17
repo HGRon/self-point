@@ -88,7 +88,7 @@ function App() {
     const tId = notify('Registrando ponto', ToastTypeEnum.LOADING);
 
     try {
-      if (clocking.length === 4)
+      if (clocking.length >= 4)
         throw new Error('O limite de ponto por dia foi atingido.');
 
       setRegisterLoading(true);
