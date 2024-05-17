@@ -93,17 +93,17 @@ app.on('activate', () => {
 });
 
 function storageIpcSubscriber(): void {
-  ipcMain.on(IpcProcessEnum.STORAGE, async (event, action, key, value) => {
+  ipcMain.on(IpcProcessEnum.STORAGE, async (event, code, action, key, value) => {
     const ipcStorage = new IpcStorageService();
 
     if (action === StorageMethodsEnum.GET) {
       const result = await ipcStorage.get(key);
-      return void event.reply(IpcProcessEnum.STORAGE, result);
+      return void event.reply(IpcProcessEnum.STORAGE + code, result);
     }
 
     if (action === StorageMethodsEnum.SET) {
       ipcStorage.set(key, value);
-      return void event.reply(IpcProcessEnum.STORAGE, value);
+      return void event.reply(IpcProcessEnum.STORAGE + code, value);
     }
   });
 }
@@ -116,9 +116,9 @@ let cronReference: ScheduledTask = null;
 // TODO: E se eu bater um ponto e não bater mais nenhum? Quem me garanti que amanha vai dar um show no horario
 // TODO: que configurei? (Pensar)
 function cronIpcSubscriber(mainWindow: BrowserWindow): void {
-  ipcMain.on(IpcProcessEnum.CRON,async (event, clockings) => {
+  ipcMain.on(IpcProcessEnum.CRON,async (event, code, clockings) => {
     const result = await cronScheduler(clockings, mainWindow);
-    return void event.reply(IpcProcessEnum.CRON, { time: result });
+    return void event.reply(IpcProcessEnum.CRON + code, { time: result });
   });
 }
 
@@ -245,7 +245,7 @@ function notification(options?: NotificationConstructorOptions, handler?: () => 
 }
 
 function httpIpcSubscriber(): void {
-  ipcMain.on(IpcProcessEnum.HTTP, async (event, baseUrl, method: HttpMethodsEnum, endpoint: string, data?: any, cookies?: string[], config?: CreateAxiosDefaults<any>): Promise<HttpEitherResponse<unknown>> => {
+  ipcMain.on(IpcProcessEnum.HTTP, async (event, code, baseUrl, method: HttpMethodsEnum, endpoint: string, data?: any, cookies?: string[], config?: CreateAxiosDefaults<any>): Promise<HttpEitherResponse<unknown>> => {
     const http = new IpcHttpService(baseUrl, config);
 
     if (cookies?.length)
@@ -266,14 +266,14 @@ function httpIpcSubscriber(): void {
       response = await http.delete(endpoint);
 
     if (response && response.isRight())
-      return void event.reply(IpcProcessEnum.HTTP, response.value);
+      return void event.reply(IpcProcessEnum.HTTP + code, response.value);
 
-    return void event.reply(IpcProcessEnum.HTTP_ERROR, response?.value);
+    return void event.reply(IpcProcessEnum.HTTP + code + '_error', response?.value);
   });
 }
 
 function frameIpcSubscriber(mainWindow: BrowserWindow): void {
-  ipcMain.on(IpcProcessEnum.FRAME, async (event, action) => {
+  ipcMain.on(IpcProcessEnum.FRAME, async (event, code, action) => {
     if (action === FrameActionsEnum.HIDE)
       mainWindow.hide();
 
@@ -289,9 +289,9 @@ function frameIpcSubscriber(mainWindow: BrowserWindow): void {
 }
 
 function registerPointIpcSubscriber(): void {
-  ipcMain.on(IpcProcessEnum.REGISTER, async (event, baseUrl, clockingIn) => {
+  ipcMain.on(IpcProcessEnum.REGISTER, async (event, code, baseUrl, clockingIn) => {
     const result = await registerPoint(baseUrl, clockingIn);
-    return void event.reply(IpcProcessEnum.REGISTER, result);
+    return void event.reply(IpcProcessEnum.REGISTER + code, result);
   });
 }
 

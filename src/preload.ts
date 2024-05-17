@@ -3,21 +3,25 @@
 
 import { contextBridge, ipcRenderer } from 'electron';
 import { IpcProcessEnum } from './ipc/ipc-process.enum';
+import { RandomCode } from './renderer/helpers/random-code';
 
 contextBridge.exposeInMainWorld('api', {
   async ipcEvent(channel: IpcProcessEnum, ...args: any[]) {
+    const randomCode = new RandomCode();
+    const code = '_' + randomCode.generate();
+
     return new Promise((resolve, reject) => {
-      ipcRenderer.on(channel, (event, result) => {
-        ipcRenderer.off(channel + '_error', () => void 0);
+      ipcRenderer.on(channel + code, (event, result) => {
+        ipcRenderer.off(channel + code + '_error', () => void 0);
         resolve(result);
       });
 
-      ipcRenderer.on(channel + '_error', (event, result) => {
-        ipcRenderer.off(channel, () => void 0);
+      ipcRenderer.on(channel + code + '_error', (event, result) => {
+        ipcRenderer.off(channel + code, () => void 0);
         reject(result);
       });
 
-      ipcRenderer.send(channel, ...args);
+      ipcRenderer.send(channel, code, ...args);
     });
   },
 });

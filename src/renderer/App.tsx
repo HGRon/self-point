@@ -20,29 +20,38 @@ import { ClockingInService } from './services/cloking-in/clocking-in-service';
 import Toggle from './components/toggle';
 
 function App() {
-
   const [isOpen, setIsOpen] = React.useState(false);
   const [registerLoading, setRegisterLoading] = React.useState(false);
   const [schedule, setSchedule] = React.useState('');
   const [clocking, setClocking] = React.useState(['']);
   const [clockingLoading, setClockingLoading] = React.useState(true);
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (): void => {
     setIsOpen(!isOpen);
   }
 
-  const handleClose = async () => {
+  const handleClose = async (): Promise<void> => {
     await close();
   }
 
-  const getDarkMode = async () => {
-    const isDarkMode = await isDark()
-    await setStyleMode(isDarkMode);
+  const handlerToggle = async (toggle: boolean): Promise<void> => {
+    console.log(toggle);
+
+    updateStyleMode(toggle);
+    await saveIsDark(toggle);
   }
 
-  const setStyleMode = async (toggle: boolean) => {
-    document.documentElement.setAttribute('data-theme', toggle ? 'dark' : 'light');
-    await saveIsDark(toggle);
+  const getDarkMode = async (): Promise<void> => {
+    const dark = await isDark();
+    updateStyleMode(dark);
+
+    setIsDarkMode(dark);
+  }
+
+  const updateStyleMode = (isDark: boolean): void => {
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }
 
   const getTodayPoints = async () => {
@@ -99,14 +108,20 @@ function App() {
     }
   }
 
-  const reload = async () => {
+  const reload = async (): Promise<void> => {
     const frameService = new FrameService();
     await frameService.reload();
   }
 
-  useEffect(() => {
-    getDarkMode().then();
-    getTodayPoints().then();
+  const onInit = async (): Promise<void> => {
+    await getDarkMode();
+    await getTodayPoints();
+
+    setIsLoading(false);
+  }
+
+  useEffect((): void => {
+    onInit().then();
   }, []);
 
   return (
@@ -114,7 +129,7 @@ function App() {
 
       <header className="app__header">
         <Button onClick={ handleOpenModal } animation={ ButtonAnimationEnum.HOVER_SCALE } size={ ButtonSizeEnum.LARGE } >⚙️</Button>
-        <Toggle onChange={ setStyleMode } leftIcon="☀️" rightIcon="🌑" startValue={ false } />
+        <Toggle onChange={ handlerToggle } trueIcon="🌑" falseIcon="☀️" disabled={ isLoading } startValue={ isDarkMode } />
 
         <div className="app__header__movable"></div>
 
@@ -125,7 +140,7 @@ function App() {
 
       <Button onClick={ reload }>Atualizar</Button>
 
-      <DraggableCircle onComplete={ registerPoint } />
+      <DraggableCircle disabled={ isLoading } onComplete={ registerPoint } />
 
       <ModalConfig isOpen={ isOpen } forceClose={ () => setIsOpen(false) } />
 
@@ -162,15 +177,16 @@ async function getUserConfig(): Promise<UserConfig> {
 
 async function isDark(): Promise<boolean> {
   const storage = new StorageService();
-  const darkMode = await storage.get<boolean>(StorageKeyEnum.DARK_MODE);
+  const dark = await storage.get<string>(StorageKeyEnum.DARK_MODE);
 
-  if (!darkMode)
+  if (!dark)
     return false;
 
-  return darkMode;
+  const darkParsed = JSON.parse(dark as string);
+  return darkParsed.isDark;
 }
 
-async function saveIsDark(isDarK: boolean): Promise<void> {
+async function saveIsDark(isDark: boolean): Promise<void> {
   const storage = new StorageService();
-  await storage.set(StorageKeyEnum.DARK_MODE, isDarK);
+  await storage.set<string>(StorageKeyEnum.DARK_MODE, JSON.stringify({ isDark }));
 }

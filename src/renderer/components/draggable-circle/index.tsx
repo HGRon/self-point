@@ -4,9 +4,10 @@ import { MouseInfoInterface } from './models/mouse-info.interface';
 
 interface DraggableCircleProps {
   onComplete?: () => void;
+  disabled?: boolean;
 }
 
-function DraggableCircle({ onComplete }: DraggableCircleProps) {
+function DraggableCircle({ onComplete, disabled }: DraggableCircleProps) {
   const [mouseInfo, setMouseInfo] = useState<MouseInfoInterface>({ x: 0, y: 0, isMouseDown: false });
 
   const draggableRef = useRef(null);
@@ -56,7 +57,7 @@ function DraggableCircle({ onComplete }: DraggableCircleProps) {
   useEvent('mouseup', onMouseUp);
 
   return (
-    <div className="draggable"
+    <div className={ 'draggable' + (disabled ? ' disabled' : '') }
          ref={ draggableRef }
          onMouseDown={ onMouseDown }
     >
